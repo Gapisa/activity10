@@ -1,0 +1,32 @@
+---
+# tasks file for roles/kibana
+
+- name: Add Elastic GPG Key
+  apt_key:
+    url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+
+- name: Install APT Transport
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Add Elasticsearch Repo
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+    state: present
+  become: yes
+- name: Update Package
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Install Kibana
+  apt:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: Start Kibana
+  service:
+    name: kibana
+    state: started
