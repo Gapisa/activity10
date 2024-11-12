@@ -1,0 +1,41 @@
+---
+# tasks file for roles/elasticSearch
+
+- name: Installing Java and Nginx
+  apt:
+    name:
+      - openjdk-11-jdk
+      - nginx
+    state: latest
+    update_cache: yes
+
+- name: Installing APT Transport
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Add Elasticsearch Key
+  apt_key:
+    url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: Add Elasticsearch Repo
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+    state: present
+  become: yes
+    
+- name: Update Package
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Install Elasticsearch
+  apt:
+    name: elasticsearch
+    update_cache: yes
+
+- name: Start Elasticsearch
+  service:
+    name: elasticsearch
+    state: started
