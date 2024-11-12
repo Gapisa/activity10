@@ -3,4 +3,4 @@
   hosts: elasticsearch_host
   become: yes
   roles:
-    - elasticsearch
+    - elasticSearch
